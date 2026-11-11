@@ -1,0 +1,20 @@
+name: Submit reviewed upstream contributions
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  submit:
+    if: github.repository == 'BriDigitalCo/Go-Hybrid'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Submit one reviewed contribution
+        env:
+          BRI_UPSTREAM_PR_TOKEN: ${{ secrets.BRI_UPSTREAM_PR_TOKEN }}
+        run: python3 .github/scripts/submit_reviewed.py
